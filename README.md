@@ -66,7 +66,7 @@ Augmentation (Data Shifting, Minus, Reverse)을 통한 Noisy 데이터 생성 : 
 * DCCRN (Blue)
 * FullSubNet (Orange)
 ![image](https://user-images.githubusercontent.com/87358781/146786508-cb499d8d-9ec0-4d60-a64a-93fad7f53d09.png)  
-Noisy Data 3360개, 손실함수는 SI-SNR을 기준으로 Network만 변경하여 실험한다.  
+Noisy Data 3360개를 동일한 실험 조건으로 Network만 변경하여 실험한다.  
 결과적으로 DCCRN에서는 PESQ가 2.140, FullSubNet에서는 2.112으로 DCCRN인 경우 더 나은 성능을 보인다.  
   
 > Loss에 따른 성능 비교
