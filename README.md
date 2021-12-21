@@ -158,16 +158,20 @@ Augmentation 데이터를 포함한 13440개 데이터셋의 실험 결과 기�
 1. 제공된 데이터셋의 경우 네트워크로는 DCCRN, 손실함수로는 SI-SNR의 조합이 가장 큰 성능을 보임.  
 2. Perceptual Loss를 추가하는 것은 사람이 실제로 느끼는 음질의 향상 뿐 아니라 음성 평가 지표인 PESQ 수치에서도 향상을 보인다.  
 3. DCCRN 네트워크 구조의 LSTM, Convolution Layer의 수를 변형시키는 것은 성능 향상에 도움을 주지 않는다.  
-4. 데이터 Augmentation은 한정된 데이터를 증가시킬 수 있으며, 성능 향상에 많은 도움을 준다.  
+4. 데이터 Augmentation은 한정된 데이터를 증가시킬 수 있으며, 성능 향상에 많은 도움을 준다. 
+ (데이터가 증가할수록 메모리의 부족으로 오류가 발생한다. SWAP Memory를 통해 해결할 수 있지만, 속도가 매우 저하된다.)  
 
 >  추가 연구 계획
 1. 추가적인 Augmentation 기법으로 실험을 하여 데이터 셋을 증가시킨다.  
 2. FullSubNet 네트워크 구조를 변형하여 실험하고 기존 모델과 비교한다.  
-3. 
+3. 데이터셋 증가에 따른 메모리 부족을 해결할 수 있는 방안을 모색한다.
 
-# Reference
+# Reference  
+DCCRN: Deep Complex Convolution Recurrent Network for Phase-Aware Speech Enhancement  
+Yanxin Hu, Yun Liu, Shubo Lv, Mengtao Xing, Shimin Zhang, Yihui Fu, Jian Wu, Bihong Zhang, Lei Xie  [[arXiv]](https://arxiv.org/abs/2008.00264) [[code]](https://github.com/huyanxin/DeepComplexCRN)  
+  
+FullSubNet: A Full-Band and Sub-Band Fusion Model for Real-Time Single-Channel Speech Enhancement
+Xiang Hao, Xiangdong Su, Radu Horaud, Xiaofei Li  [[arXiv]](https://arxiv.org/abs/2010.15508) [[code]](https://github.com/haoxiangsnr/FullSubNet)
 
-
-FullSubNet
 
 
