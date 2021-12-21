@@ -22,6 +22,10 @@ DNN-based Speech Enhancement in the frequency domain
 최근 딥러닝을 이용한 음성 향상 기술은 높은 성과를 보이고 있다.  
 
 * 응용 분야로는 음성인식, 화상회의, 보청기 등 많은 곳에 쓰인다.  
+> 연구 목적
+1. 주어진 음성 데이터에 대한 최적의 모델 탐색
+2. 모델 구조 변형을 통한 성능 비교
+3. 데이터 증강을 통한 성능 향상
 
 # 2. 실험 환경
 > **Setting**  
@@ -55,19 +59,21 @@ Augmentation (Data Shifting, Minus, Reverse)을 통한 Noisy 데이터 생성 : 
 * PESQ (Perceptual Evaluation of Speech Quality)  
 
 
-# 3. 모델 별 성능 측정 및 비교
-> Loss에 따른 성능 비교
-* MSE, SI-SNR, SDR, SI-SDR  
-![image](https://user-images.githubusercontent.com/87358781/146791289-36951d49-35a5-4cff-9d3b-7795cb36a192.png)  
-Noisy Data 1120개, Network 모델은 DCCRN을 기준으로 손실함수만 변경하여 실험한다.  
-결과적으로 손실함수(Loss)가 SI-SNR인 경우 가장 좋은 성능을 보인다.  
-
+# 3. 모델 별 성능 측정 및 비교  
+모든 실험은 Loss가 적절히 수렴했다고 판단되었음을 가정한다.  
+  
 > Network에 따른 성능 비교  
 * DCCRN (Blue)
 * FullSubNet (Orange)
 ![image](https://user-images.githubusercontent.com/87358781/146786508-cb499d8d-9ec0-4d60-a64a-93fad7f53d09.png)  
 Noisy Data 3360개, 손실함수는 SI-SNR을 기준으로 Network만 변경하여 실험한다.  
 결과적으로 DCCRN에서는 PESQ가 2.140, FullSubNet에서는 2.112으로 DCCRN인 경우 더 나은 성능을 보인다.  
+  
+> Loss에 따른 성능 비교
+* MSE, SI-SNR, SDR, SI-SDR  
+![image](https://user-images.githubusercontent.com/87358781/146791289-36951d49-35a5-4cff-9d3b-7795cb36a192.png)  
+Noisy Data 1120개, Network 모델은 DCCRN을 기준으로 손실함수만 변경하여 실험한다.  
+결과적으로 손실함수(Loss)가 SI-SNR인 경우 가장 좋은 성능을 보인다.  
 
 > Perceptual loss 추가에 따른 성능 비교
 * 추가하지 않음 (Blue) 
@@ -80,6 +86,8 @@ PESQ는 PMSQE일 때 2.162, LMS는 2.153으로 증가함을 볼 수 있으며, P
 더불어, PMSQ 수치 뿐 아니라 사람이 실제로 느끼는 음성의 질이 매우 좋아짐을 볼 수 있었다.  
 
 # 4. 네트워크 모델 구조 변형
+![CRN Structure](https://user-images.githubusercontent.com/87358781/146889875-397d6e1f-4fef-4751-856f-fa7113c7f2d8.png)  
+1. LSTM 구조 변형 
 > LSTM 개수 변화에 따른 성능 비교  
 * 기존 (2개)
 * 기존 -1 (1개)
@@ -88,6 +96,12 @@ PESQ는 PMSQE일 때 2.162, LMS는 2.153으로 증가함을 볼 수 있으며, P
 DCCRN의 구조를 보면 LSTM이 2개임을 볼 수 있다. LSTM의 수를 변화시켰을 때 성능 비교는 다음과 같다.  
 ![image](https://user-images.githubusercontent.com/87358781/146795418-00951943-4ada-49a7-8c6a-5eab0aecb33a.png)  
 Data 3360개, DCCRN, SI-SNR, PMSQE를 적용시켰을 때, 성능 차이는 미미했고, 기존 모델인 LSTM이 2개일 때 가장 좋은 성능을 보인다.  
+1. Convolution Layer 구조 변형
+> Convolution Layer 개수 변화에 따른 성능 비교
+* 기존 (6층)
+* 기존 -1 (5층)
+* 기존 +1 (7층)
+* 기존 +2 (8층)  
 
 # 5. 데이터 증강 기법을 통한 성능 향상
 > Data Augmentation이란?
