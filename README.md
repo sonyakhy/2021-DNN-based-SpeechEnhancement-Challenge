@@ -71,7 +71,12 @@ Noisy Data 3360개를 동일한 실험 조건으로 Network만 변경하여 실�
   
 > Loss에 따른 성능 비교
 * MSE, SI-SNR, SDR, SI-SDR  
-![image](https://user-images.githubusercontent.com/87358781/146791289-36951d49-35a5-4cff-9d3b-7795cb36a192.png)  
+|제목|내용|설명|  
+|:---|---:|:---:|  
+|왼쪽정렬|오른쪽정렬|중앙정렬|  
+|왼쪽정렬|오른쪽정렬|중앙정렬|  
+|왼쪽정렬|오른쪽정렬|중앙정렬|  
+
 Noisy Data 1120개, Network 모델은 DCCRN을 기준으로 손실함수만 변경하여 실험한다.  
 결과적으로 손실함수(Loss)가 SI-SNR인 경우 가장 좋은 성능을 보인다.  
 
