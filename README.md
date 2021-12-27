@@ -175,4 +175,4 @@ Xiang Hao, Xiangdong Su, Radu Horaud, Xiaofei Li  [[arXiv]](https://arxiv.org/ab
   
 Deep Noise Suppression (DNS) Challenge 4 - ICASSP 2022 [[link]](https://github.com/microsoft/DNS-Challenge)  
 
-'Supervised and helped by C-J Lee, S-R Hwang, and H-U Yoon'
+>'Supervised and helped by C-J Lee, S-R Hwang, and H-U Yoon'
