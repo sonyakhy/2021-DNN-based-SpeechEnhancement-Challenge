@@ -7,6 +7,7 @@ DNN-based Speech Enhancement in the frequency domain
 팀원 : 허명범, 이연재, 김승연, 서은빈  
 주제 : Data Augmentation을 통한 DNN 기반 음성 향상
 
+
 # 목차
 1. 연구 소개
 2. 실험 환경
@@ -165,6 +166,77 @@ Augmentation 데이터를 포함한 13440개 데이터셋의 실험 결과 기�
 1. 추가적인 Augmentation 기법으로 실험을 하여 데이터 셋을 증가시킨다.  
 2. FullSubNet 네트워크 구조를 변형하여 실험하고 기존 모델과 비교한다.  
 3. 데이터셋 증가에 따른 메모리 부족을 해결할 수 있는 방안을 모색한다.
+
+# Manual
+## Step 1
+> 1. 데이터셋 디렉토리 생성  
+> (1) train/clean, train/noise 디렉토리 생성  
+> (2) validation/clean, validation/noise 디렉토리 생성  
+> 디렉토리 생성 후 wav 파일을 각각 넣으면 된다.  
+> 단, train, validation의 clean 데이터는 사전에 지정한 비율로 나누어 할당해야한다.  
+> 예시)  
+./Dataset/train/clean  
+./Dataset/train/noise  
+./Dataset/validation  
+./Dataset/validation/clean  
+여기서 validation에 noise가 없는 이유는 validation 수행 시 noise를 train 때 썼던 noise를 사용하기 때문이다.  
+  
+> 2. Dataset 훈련, 검증 데이터 분할하기  
+clean 데이터는 1680개로 구성된다.  
+train : validation = 9:1 = 1512 : 168  
+train : validation = 8:2 = 1344 : 336   
+train : validation = 7:3 = 1176 : 505  
+train : validation = 3:1 = 1120 : 560
+본 실험에서는 각 비율에 대한 성능을 비교하였으며 성능이 가장 좋은 train : validation = 3:1로 채택한다.    
+여기서 유의해야할 점은 train에 넣은 clean wav파일은 validation에 넣으면 안된다. 
+noise의 경우엔 train에 넣은 noise 그대로 validation에 사용하면 된다.
+
+## Step 2
+1. generate_noisy_data.py 설정  
+설정한 mode의 clean 데이터와 noise 데이터를 결합시켜 noisy 데이터로 만들어주는 코드.  
+(clean 데이터 + noise 데이터 => noisy 데이터)  
+> main에서 speech_dir = Path("./Dataset")로 설정. 참고로 ./는 현재디렉토리를 의미.  
+> 현재 디렉토리인 프로젝트 디렉토리의 하위 디렉토리인 Dataset을 기본 경로로 설정하겠다는 것임.  
+
+2. generate_noisy_data.py 실행  
+이 파이썬 코드는 3가지 인자를 입력해야함. mode, snr, fs
+> (1) 터미널에서 파이참에서 사용 중인 conda 가상환경을 활성화한다  
+(2) 터미널에서 프로젝트 디렉토리로 이동한다  
+(3) python generate_noisy_data.py [mode] [snr] [fs] 입력    
+    예시) python generate_noisy_data.py 'train' '0' '16000'  
+    train noisy data를 0db로 clean data 수 만큼 생성  
+(4) 인자를 train으로 넣었으면 train의 clean wav 파일과 noise wav 파일이 합쳐져 noisy라는 디렉토리를 생성하고 그 안에 noisy wav 파일을 만들 것임.
+
+## Step 3  
+* wav_to_numpy.py  
+생성한 noisy wav에 해당하는 라벨 clean wav 파일을 찾아 매핑하는 코드  
+(noisy data의 파일 명은 clean data 파일 명 + 합성에 사용한 noise data 이름이기 때문에 noise data 이름을 제외한 앞 부분을 따서 clean 폴더에서 찾고, 리스트에 [noisy, clean]를 append 해주는 방식임)  
+> (1) wav_to_numpy.py 설정 및 실행 (train noisy 라벨링)  
+> (2) wav_to_numpy_validation.py 설정 및 실행 (validation noisy 라벨링)  
+
+## Step 4
+* dataloader.py 설정
+> dataloader.py의 Wave_Dataset 클래스에서 train / valid의 path를 Step 3에서 생성한 npy 파일로 지정  
+예시) self.input_path = "./Dataset/train_dataset_norm.npy"  
+
+## Step 5
+1. config.py 설정  
+모델 구조, 훈련 방식 등을 교체하기 위한 configuration  
+setting을 변경해가며 데이터셋에 대한 최적의 실험 세팅을 찾아내고자 함.  
+> (1) LOSS : MSE, SDR, SI-SNR, SI-SDR  
+> (2) MODEL : DCCRN, CRN, FullSubNet  
+> (3) Skip Conncection : True/False  
+> (4) EPOCH  
+> (5) BATCH  
+> (6) Learning Rate  
+> (7) Sampling frequency   
+(expr_num에 지정된 이름으로 실험결과가 ./models에 저장됨.)  
+2. train_interface.py 실행  
+
+## Strp 6
+> 실험 결과 분석
+터미널에서 tensorboard --logdir ./logs 명렁어 실행하면 locahost 주소가 뜸.  
+이 주소에서 성능 지표를 확인할 수 있음.  
 
 # Reference  
 DCCRN: Deep Complex Convolution Recurrent Network for Phase-Aware Speech Enhancement  
